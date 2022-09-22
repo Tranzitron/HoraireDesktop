@@ -31,7 +31,7 @@ namespace HoraireDesktop
         int columnAmount = 5;
         int spaceBetweenColumns = 100;
         int columnsHeight = (int)(form1Size.Height * 0.8);
-        int startX = 30;
+        int startX = 100;
         int startY = 30;
 
         private void Form1_Load(object sender, EventArgs e)
@@ -55,7 +55,10 @@ namespace HoraireDesktop
             //t.createTestTable(g);
             t.createCustomTable(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY);
             t.createTestText(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY);
+            t.createTestBlock(g,blockA);
         }
+
+
 
     }
 }
