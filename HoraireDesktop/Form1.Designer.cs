@@ -33,10 +33,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dayBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // dayBindingSource
-            // 
-            this.dayBindingSource.DataSource = typeof(HoraireDesktop.Day);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

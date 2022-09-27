@@ -17,6 +17,7 @@ namespace HoraireDesktop
         static int color = 200;
         SolidBrush backBrush = new SolidBrush(Color.FromArgb(255, color, color, color));
         SolidBrush blackBrush = new SolidBrush(Color.Black);
+        SolidBrush whiteBrush = new SolidBrush(Color.White);
 
         int rows = 5;
         int rowsPx = 100;
@@ -78,6 +79,9 @@ namespace HoraireDesktop
             float start = block.timeStart.hour+(block.timeStart.minute/60);
             float stop = block.timeStop.hour+(block.timeStop.minute/60);
             float height = block.timeTotal;
+            
+            Rectangle fullTable = new Rectangle(sX, sY + (int)(stop / start * columnsPx), rowsPx, (int)(stop / start * columnsPx));
+            g.FillRectangle(blackBrush, fullTable);
             g.DrawLine(penBlack, sX, sY+(stop/start*columnsPx),sX+ rowsPx, sY + (stop / start * columnsPx));
             g.DrawLine(penBlack, sX, sY+height+ sY + (stop / start * columnsPx), sX + rowsPx, sY + height + sY + (stop / start * columnsPx));
         }
