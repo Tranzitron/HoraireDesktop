@@ -80,6 +80,7 @@ namespace HoraireDesktop
             float stop = block.timeStop.hour+(block.timeStop.minute/60);
             float height = block.timeTotal;
             
+            // try *height instead of * colmnpx in Rectangle param 4
             Rectangle fullTable = new Rectangle(sX, sY + (int)(stop / start * columnsPx), rowsPx, (int)(stop / start * columnsPx));
             g.FillRectangle(blackBrush, fullTable);
             g.DrawLine(penBlack, sX, sY+(stop/start*columnsPx),sX+ rowsPx, sY + (stop / start * columnsPx));
