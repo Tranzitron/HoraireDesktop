@@ -28,14 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.dayBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.dayBindingSource)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dayBindingSource
-            // 
-            this.dayBindingSource.DataSource = typeof(HoraireDesktop.Day);
             // 
             // Form1
             // 
@@ -45,16 +38,13 @@
             this.ClientSize = new System.Drawing.Size(1012, 473);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.Resize += new System.EventHandler(this.Form1_Resize);
-            ((System.ComponentModel.ISupportInitialize)(this.dayBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.BindingSource dayBindingSource;
     }
 }
 

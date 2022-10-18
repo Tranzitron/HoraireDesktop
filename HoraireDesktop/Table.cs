@@ -17,6 +17,7 @@ namespace HoraireDesktop
         static int color = 200;
         SolidBrush backBrush = new SolidBrush(Color.FromArgb(255, color, color, color));
         SolidBrush blackBrush = new SolidBrush(Color.Black);
+        SolidBrush whiteBrush = new SolidBrush(Color.White);
 
         int rows = 5;
         int rowsPx = 100;
@@ -37,7 +38,6 @@ namespace HoraireDesktop
             {
                 g.DrawLine(penRed, sX+(i*rowsPx), sY, sX + (i * rowsPx), sY + columnsPx);
             }
-
         }
 
         public void createCustomTable(System.Drawing.Graphics g, int columnAmount,int spaceBetweenColumns,int columnsHeight, int startX, int startY)
@@ -53,33 +53,35 @@ namespace HoraireDesktop
             {
                 g.DrawLine(penBlack, startX + (i * spaceBetweenColumns), startY, startX + (i * spaceBetweenColumns), startY + columnsHeight);
             }
-
         }
 
-        public void createTestText(System.Drawing.Graphics g, int columnAmount, int spaceBetweenColumns, int columnsHeight, int startX, int startY)
+        public void createTestText(System.Drawing.Graphics g, int columnAmount, int spaceBetweenColumns, int columnsHeight, int startX, int startY, int gridStart, int gridStop)
         {
             Font font = new Font("Arial", 12);
             Rectangle fullTable = new Rectangle(startX, startY, (columnAmount - 1) * spaceBetweenColumns, columnsHeight);
             // g.DrawString("Text", font, blackBrush, fullTable);
-            int start = 8;
-            int stop = 18;
-            for(int i = start; i <= stop; i++)
+            for(int i = gridStart; i <= gridStop; i++)
             {
                 string text = i + "h00";
                 SizeF stringSize = new SizeF();
                 stringSize = g.MeasureString(text, font);
-                Rectangle spot = new Rectangle((int)((float)startX- stringSize.Width*1.05), startY + (columnsHeight*(i-start)/10), (columnAmount - 1) * spaceBetweenColumns, columnsHeight);
+                Rectangle spot = new Rectangle((int)((float)startX- stringSize.Width*1.05), startY + (columnsHeight*(i- gridStart) /(gridStop-gridStart)), (columnAmount - 1) * spaceBetweenColumns, columnsHeight);
                 g.DrawString(text, font, blackBrush, spot);
             }
         }
 
-        public void createTestBlock(System.Drawing.Graphics g, Block block)
+        public void createTestBlock(System.Drawing.Graphics g, Block block, int columnsHeight, int gridStart, int gridStop)
         {
-            float start = block.timeStart.hour+(block.timeStart.minute/60);
-            float stop = block.timeStop.hour+(block.timeStop.minute/60);
-            float height = block.timeTotal;
-            g.DrawLine(penBlack, sX, sY+(stop/start*columnsPx),sX+ rowsPx, sY + (stop / start * columnsPx));
-            g.DrawLine(penBlack, sX, sY+height+ sY + (stop / start * columnsPx), sX + rowsPx, sY + height + sY + (stop / start * columnsPx));
+
+            float start = (float)block.timeStart.hour+((float)block.timeStart.minute/60);
+            float stop = (float)block.timeStop.hour+((float)block.timeStop.minute/60);
+
+            float startHeight = sY + ((start - gridStart) / (gridStop - gridStart) * columnsHeight);
+            float stopHeight = sY + ((stop - gridStart) / (gridStop - gridStart) * columnsHeight);
+            g.FillRectangle(whiteBrush, sX, startHeight, rowsPx, stopHeight- startHeight);
+            g.DrawRectangle(penBlack, sX, startHeight, rowsPx, stopHeight - startHeight);
+            //g.DrawLine(penBlack, sX, startHeight, sX + rowsPx, startHeight);
+            //g.DrawLine(penBlack, sX, stopHeight, sX + rowsPx, stopHeight);
         }
     }
 }
