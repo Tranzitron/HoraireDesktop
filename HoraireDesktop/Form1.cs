@@ -24,7 +24,10 @@ namespace HoraireDesktop
         static Block blockA = new Block(0,"blockA","Description", new BlockTime(10,0),new BlockTime(12,0));
         static Block blockB = new Block(1,"blockB","Description", new BlockTime(14,0),new BlockTime(16,0));
         static Block blockC = new Block(2,"Bus","Description", new BlockTime(6,45),new BlockTime(7,30));
-        static Block[] blocks = { blockA, blockB };
+        static Block blockD = new Block(3,"A block","Description", new BlockTime(6,45),new BlockTime(7,30));
+        static Block[] blocks = { blockA, blockB, blockC, blockD };
+
+
         Day day = new Day(blocks);
         // User defined (not yet)
         int columnAmount = 5;
@@ -33,36 +36,36 @@ namespace HoraireDesktop
         int startX = 100;
         int startY = 30;
 
+        Font font = new Font("Arial", 12);
+        // bool autoAdjust: check minimum time and maximum time automatically
         int gridStart = 6;
         int gridStop = 18;
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            form1Size = Form1.ActiveForm.Size;
             Graphics g;
             g = this.CreateGraphics();
-            //t.createTestTable(g);
-            g.Clear(Color.White);
-            t.createCustomTable(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY);
-            t.createTestBlock(g, blockA, (int)(form1Size.Height * 0.8), gridStart, gridStop);
-            t.createTestBlock(g, blockB, (int)(form1Size.Height * 0.8), gridStart, gridStop);
-            t.createTestBlock(g, blockC, (int)(form1Size.Height * 0.8), gridStart, gridStop);
-            t.createTestText(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY, gridStart, gridStop);
+            draw(g);
+            GC.Collect();
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            form1Size = Form1.ActiveForm.Size;
-            System.Drawing.Graphics g;
+            Graphics g;
             g = this.CreateGraphics();
-            //t.createTestTable(g);
-            t.createCustomTable(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY);
-            t.createTestBlock(g, blockA, (int)(form1Size.Height * 0.8), gridStart, gridStop);
-            t.createTestBlock(g, blockB, (int)(form1Size.Height * 0.8), gridStart, gridStop);
-            t.createTestBlock(g, blockC, (int)(form1Size.Height * 0.8), gridStart, gridStop);
-            t.createTestText(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY, gridStart, gridStop);
-            
+            draw(g);
         }
 
+        public void draw(Graphics g)
+        {
+            g.Clear(Color.White);
+            form1Size = Form1.ActiveForm.Size;
+            t.createCustomTable(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY);
+            foreach (Block block in blocks)
+            {
+                t.createCustomBlock(g, block, (int)(form1Size.Height * 0.8), gridStart, gridStop, spaceBetweenColumns,startX,startY);
+            }
+            t.createCustomText(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY, gridStart, gridStop, font);
+        }
     }
 }
