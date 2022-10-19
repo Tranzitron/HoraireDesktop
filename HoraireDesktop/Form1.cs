@@ -37,6 +37,8 @@ namespace HoraireDesktop
         int startY = 30;
 
         Font font = new Font("Arial", 12);
+        Single blockTitleHeight = 0.5f;
+        Single blockDescHeight = 0.8f;
         // bool autoAdjust: check minimum time and maximum time automatically
         int gridStart = 6;
         int gridStop = 18;
@@ -63,7 +65,7 @@ namespace HoraireDesktop
             t.createCustomTable(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY);
             foreach (Block block in blocks)
             {
-                t.createCustomBlock(g, block, (int)(form1Size.Height * 0.8), gridStart, gridStop, spaceBetweenColumns,startX,startY);
+                t.createCustomBlock(g, block, (int)(form1Size.Height * 0.8), gridStart, gridStop, spaceBetweenColumns,startX,startY, font, blockTitleHeight, blockDescHeight);
             }
             t.createCustomText(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY, gridStart, gridStop, font);
         }

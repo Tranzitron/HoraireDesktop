@@ -1,4 +1,9 @@
 ﻿using System.Drawing;
+using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Media;
+using Pen = System.Drawing.Pen;
+using Color = System.Drawing.Color;
+using System;
 
 namespace HoraireDesktop
 {
@@ -45,7 +50,8 @@ namespace HoraireDesktop
             }
         }
 
-        public void createCustomBlock(Graphics g, Block block, int columnsHeight, int gridStart, int gridStop, int spaceBetweenColumns, int startX, int startY)
+        // Add text in blocks
+        public void createCustomBlock(Graphics g, Block block, int columnsHeight, int gridStart, int gridStop, int spaceBetweenColumns, int startX, int startY, Font font, Single blockTitleHeight, Single blockDescHeight)
         {
 
             float start = (float)block.timeStart.hour+((float)block.timeStart.minute/60);
@@ -53,8 +59,29 @@ namespace HoraireDesktop
 
             float startHeight = startY + ((start - gridStart) / (gridStop - gridStart) * columnsHeight);
             float stopHeight = startY + ((stop - gridStart) / (gridStop - gridStart) * columnsHeight);
-            g.FillRectangle(whiteBrush, startX, startHeight, spaceBetweenColumns, stopHeight- startHeight);
-            g.DrawRectangle(penBlack, startX, startHeight, spaceBetweenColumns, stopHeight - startHeight);
+            g.FillRectangle(whiteBrush, startX+(block.id * spaceBetweenColumns), startHeight, spaceBetweenColumns, stopHeight- startHeight);
+            g.DrawRectangle(penBlack, startX + (block.id * spaceBetweenColumns), startHeight, spaceBetweenColumns, stopHeight - startHeight);
+
+            // Text Title
+            if (block.name.Trim().Length > 0)
+            {
+                SizeF stringSize = g.MeasureString(block.name, font);
+                int stringLeft = (int)(startX + (block.id * spaceBetweenColumns) + ((spaceBetweenColumns - stringSize.Width) / 2));
+                int stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockTitleHeight) - (stringSize.Height / 2));
+                Rectangle nameSpot = Rectangle.FromLTRB(stringLeft, stringTop, 0, stringTop);
+                g.DrawString(block.name, font, blackBrush, nameSpot);
+            }
+
+            // Text Description
+            bool canWeActuallyPutADescriptionOrWeGonnaBustTheHeightOfTheBlock = true;
+            if (block.description.Trim().Length > 0 && canWeActuallyPutADescriptionOrWeGonnaBustTheHeightOfTheBlock)
+            {
+                SizeF stringSize = g.MeasureString(block.description, font);
+                int stringLeft = (int)(startX + (block.id * spaceBetweenColumns) + ((spaceBetweenColumns - stringSize.Width) / 2));
+                int stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockDescHeight) + (stringSize.Height/2));
+                Rectangle nameSpot = Rectangle.FromLTRB(stringLeft, stringTop, 0, stringTop);
+                g.DrawString(block.description, font, blackBrush, nameSpot);
+            }
         }
     }
 }
