@@ -11,17 +11,14 @@ namespace HoraireDesktop
     {
         Pen penBlue = new Pen(Color.Blue, 2);
         Pen penRed = new Pen(Color.Red, 2);
-        Pen penBlack = new Pen(Color.Black, 2);
-        static int color = 200;
-        SolidBrush backBrush = new SolidBrush(Color.FromArgb(255, color, color, color));
+        Pen penBlack = new Pen(Color.Black, 1);
+        static int backcolor = 200;
+        static int trianglecolor = 0;
+        SolidBrush backBrush = new SolidBrush(Color.FromArgb(255, backcolor, backcolor, backcolor));
+        SolidBrush triangleBrush = new SolidBrush(Color.FromArgb(255, trianglecolor, trianglecolor, trianglecolor));
         SolidBrush blackBrush = new SolidBrush(Color.Black);
         SolidBrush whiteBrush = new SolidBrush(Color.White);
 
-        int rows = 5;
-        int rowsPx = 100;
-        int columnsPx = 600;
-        int sX = 100;
-        int sY = 30;
 
         public void createCustomTable(Graphics g, int columnAmount,int spaceBetweenColumns,int columnsHeight, int startX, int startY)
         {
@@ -68,19 +65,39 @@ namespace HoraireDesktop
                 SizeF stringSize = g.MeasureString(block.name, font);
                 int stringLeft = (int)(startX + (block.id * spaceBetweenColumns) + ((spaceBetweenColumns - stringSize.Width) / 2));
                 int stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockTitleHeight) - (stringSize.Height / 2));
+                if(blockTitleHeight < 0)
+                {
+                    stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockTitleHeight));
+                }
                 Rectangle nameSpot = Rectangle.FromLTRB(stringLeft, stringTop, 0, stringTop);
                 g.DrawString(block.name, font, blackBrush, nameSpot);
             }
 
             // Text Description
-            bool canWeActuallyPutADescriptionOrWeGonnaBustTheHeightOfTheBlock = true;
-            if (block.description.Trim().Length > 0 && canWeActuallyPutADescriptionOrWeGonnaBustTheHeightOfTheBlock)
+            bool placeDesc = ((g.MeasureString(block.name, font).Height)+(g.MeasureString(block.description, font).Height)) < (stopHeight-startHeight);
+            if (block.description.Trim().Length > 0 && placeDesc)
             {
                 SizeF stringSize = g.MeasureString(block.description, font);
                 int stringLeft = (int)(startX + (block.id * spaceBetweenColumns) + ((spaceBetweenColumns - stringSize.Width) / 2));
                 int stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockDescHeight) + (stringSize.Height/2));
-                Rectangle nameSpot = Rectangle.FromLTRB(stringLeft, stringTop, 0, stringTop);
+                int stringBottom = (int)((stopHeight - stringSize.Height));
+                if(blockDescHeight > 1)
+                {
+                    stringBottom = (int)(stopHeight - stringSize.Height);
+                }
+                Rectangle nameSpot = Rectangle.FromLTRB(stringLeft, stringBottom, 0, stringBottom);
                 g.DrawString(block.description, font, blackBrush, nameSpot);
+            } 
+            else // triangle if no description
+            {
+                Single square = 0.9f;
+                PointF[] points = {
+                     new PointF((int)(startX + (block.id * spaceBetweenColumns) + (spaceBetweenColumns*square)),(int)stopHeight)
+                    ,new PointF((int)(startX + (block.id * spaceBetweenColumns) + spaceBetweenColumns),(int)stopHeight)
+                    ,new PointF((int)(startX + (block.id * spaceBetweenColumns) + spaceBetweenColumns),(int)(stopHeight-(spaceBetweenColumns*(1-square))))
+                    };
+                g.FillPolygon(triangleBrush, points);
+                //g.DrawLine(penBlack, points[0].X,points[0].Y,points[2].X,points[2].Y);
             }
         }
     }

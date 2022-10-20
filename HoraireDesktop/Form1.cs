@@ -37,8 +37,8 @@ namespace HoraireDesktop
         int startY = 30;
 
         Font font = new Font("Arial", 12);
-        Single blockTitleHeight = 0.5f;
-        Single blockDescHeight = 0.8f;
+        Single blockTitleHeight = 0.0f;
+        Single blockDescHeight = 1.0f;
         // bool autoAdjust: check minimum time and maximum time automatically
         int gridStart = 6;
         int gridStop = 18;
@@ -61,6 +61,7 @@ namespace HoraireDesktop
         public void draw(Graphics g)
         {
             g.Clear(Color.White);
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             form1Size = Form1.ActiveForm.Size;
             t.createCustomTable(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY);
             foreach (Block block in blocks)
