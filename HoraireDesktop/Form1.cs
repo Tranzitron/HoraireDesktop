@@ -70,5 +70,11 @@ namespace HoraireDesktop
             }
             t.createCustomText(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY, gridStart, gridStop, font);
         }
+
+        private void planificationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PlanForm planForm = new PlanForm();
+            planForm.ShowDialog();
+        }
     }
 }

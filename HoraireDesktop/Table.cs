@@ -65,7 +65,7 @@ namespace HoraireDesktop
                 SizeF stringSize = g.MeasureString(block.name, font);
                 int stringLeft = (int)(startX + (block.id * spaceBetweenColumns) + ((spaceBetweenColumns - stringSize.Width) / 2));
                 int stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockTitleHeight) - (stringSize.Height / 2));
-                if(blockTitleHeight < 0)
+                if(blockTitleHeight <= 0)
                 {
                     stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockTitleHeight));
                 }
@@ -81,7 +81,7 @@ namespace HoraireDesktop
                 int stringLeft = (int)(startX + (block.id * spaceBetweenColumns) + ((spaceBetweenColumns - stringSize.Width) / 2));
                 int stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockDescHeight) + (stringSize.Height/2));
                 int stringBottom = (int)((stopHeight - stringSize.Height));
-                if(blockDescHeight > 1)
+                if(blockDescHeight >= 1)
                 {
                     stringBottom = (int)(stopHeight - stringSize.Height);
                 }
@@ -90,9 +90,9 @@ namespace HoraireDesktop
             } 
             else // triangle if no description
             {
-                Single square = 0.9f;
+                Single square = 0.5f; // get minimum of both side
                 PointF[] points = {
-                     new PointF((int)(startX + (block.id * spaceBetweenColumns) + (spaceBetweenColumns*square)),(int)stopHeight)
+                    new PointF((int)(startX + (block.id * spaceBetweenColumns) + (spaceBetweenColumns*square)),(int)stopHeight)
                     ,new PointF((int)(startX + (block.id * spaceBetweenColumns) + spaceBetweenColumns),(int)stopHeight)
                     ,new PointF((int)(startX + (block.id * spaceBetweenColumns) + spaceBetweenColumns),(int)(stopHeight-(spaceBetweenColumns*(1-square))))
                     };
