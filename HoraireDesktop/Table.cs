@@ -47,57 +47,68 @@ namespace HoraireDesktop
             }
         }
 
-        public void createCustomBlock(Graphics g, Block block, int columnsHeight, int gridStart, int gridStop, int spaceBetweenColumns, int startX, int startY, Font font, Single blockTitleHeight, Single blockDescHeight)
+        public void createCustomBlock(Graphics g, Week week, int columnsHeight, int gridStart, int gridStop, int spaceBetweenColumns, int startX, int startY, Font font, Single blockTitleHeight, Single blockDescHeight)
         {
-
-            float start = (float)block.timeStart.hour+((float)block.timeStart.minute/60);
-            float stop = (float)block.timeStop.hour+((float)block.timeStop.minute/60);
-
-            float startHeight = startY + ((start - gridStart) / (gridStop - gridStart) * columnsHeight);
-            float stopHeight = startY + ((stop - gridStart) / (gridStop - gridStart) * columnsHeight);
-            g.FillRectangle(whiteBrush, startX+(block.id * spaceBetweenColumns), startHeight, spaceBetweenColumns, stopHeight- startHeight);
-            g.DrawRectangle(penBlack, startX + (block.id * spaceBetweenColumns), startHeight, spaceBetweenColumns, stopHeight - startHeight);
-
-            // Text Title
-            if (block.name.Trim().Length > 0)
+            foreach(Day day in week.days)
             {
-                SizeF stringSize = g.MeasureString(block.name, font);
-                int stringLeft = (int)(startX + (block.id * spaceBetweenColumns) + ((spaceBetweenColumns - stringSize.Width) / 2));
-                int stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockTitleHeight) - (stringSize.Height / 2));
-                if(blockTitleHeight <= 0)
+                foreach (Block block in day.blocks)
                 {
-                    stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockTitleHeight));
-                }
-                Rectangle nameSpot = Rectangle.FromLTRB(stringLeft, stringTop, 0, stringTop);
-                g.DrawString(block.name, font, blackBrush, nameSpot);
-            }
+                    float start = (float)block.timeStart.hour + ((float)block.timeStart.minute / 60);
+                    float stop = (float)block.timeStop.hour + ((float)block.timeStop.minute / 60);
 
-            // Text Description
-            bool placeDesc = ((g.MeasureString(block.name, font).Height)+(g.MeasureString(block.description, font).Height)) < (stopHeight-startHeight);
-            if (block.description.Trim().Length > 0 && placeDesc)
-            {
-                SizeF stringSize = g.MeasureString(block.description, font);
-                int stringLeft = (int)(startX + (block.id * spaceBetweenColumns) + ((spaceBetweenColumns - stringSize.Width) / 2));
-                int stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockDescHeight) + (stringSize.Height/2));
-                int stringBottom = (int)((stopHeight - stringSize.Height));
-                if(blockDescHeight >= 1)
-                {
-                    stringBottom = (int)(stopHeight - stringSize.Height);
-                }
-                Rectangle nameSpot = Rectangle.FromLTRB(stringLeft, stringBottom, 0, stringBottom);
-                g.DrawString(block.description, font, blackBrush, nameSpot);
-            } 
-            else // triangle if no description
-            {
-                Single square = 0.9f; // get minimum of both side
-                PointF[] points = {
-                    new PointF((int)(startX + (block.id * spaceBetweenColumns) + (spaceBetweenColumns*square)),(int)stopHeight)
-                    ,new PointF((int)(startX + (block.id * spaceBetweenColumns) + spaceBetweenColumns),(int)stopHeight)
-                    ,new PointF((int)(startX + (block.id * spaceBetweenColumns) + spaceBetweenColumns),(int)(stopHeight-(spaceBetweenColumns*(1-square))))
+                    float startHeight = startY + ((start - gridStart) / (gridStop - gridStart) * columnsHeight);
+                    float stopHeight = startY + ((stop - gridStart) / (gridStop - gridStart) * columnsHeight);
+                    g.FillRectangle(whiteBrush, startX + (day.day * spaceBetweenColumns), startHeight, spaceBetweenColumns, stopHeight - startHeight);
+                    g.FillRectangle(whiteBrush, startX + (day.day * spaceBetweenColumns), startHeight, spaceBetweenColumns, stopHeight - startHeight);
+                    g.DrawRectangle(penBlack, startX + (day.day * spaceBetweenColumns), startHeight, spaceBetweenColumns, stopHeight - startHeight);
+
+                    // Text Title
+                    if (block.name.Trim().Length > 0)
+                    {
+                        SizeF stringSize = g.MeasureString(block.name, font);
+                        int stringLeft = (int)(startX + (day.day * spaceBetweenColumns) + ((spaceBetweenColumns - stringSize.Width) / 2));
+                        int stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockTitleHeight) - (stringSize.Height / 2));
+                        if (blockTitleHeight <= 0)
+                        {
+                            stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockTitleHeight));
+                        }
+                        Rectangle nameSpot = Rectangle.FromLTRB(stringLeft, stringTop, 0, stringTop);
+                        g.DrawString(block.name, font, blackBrush, nameSpot);
+                    }
+
+                    // Text Description
+                    bool placeDesc = ((g.MeasureString(block.name, font).Height) + (g.MeasureString(block.description, font).Height)) < (stopHeight - startHeight);
+                    if (block.description.Trim().Length > 0 && placeDesc)
+                    {
+                        SizeF stringSize = g.MeasureString(block.description, font);
+                        int stringLeft = (int)(startX + (day.day * spaceBetweenColumns) + ((spaceBetweenColumns - stringSize.Width) / 2));
+                        int stringTop = (int)(startHeight + ((stopHeight - startHeight) * blockDescHeight) + (stringSize.Height / 2));
+                        int stringBottom = (int)((stopHeight - stringSize.Height));
+                        if (blockDescHeight >= 1)
+                        {
+                            stringBottom = (int)(stopHeight - stringSize.Height);
+                        }
+                        Rectangle nameSpot = Rectangle.FromLTRB(stringLeft, stringBottom, 0, stringBottom);
+                        g.DrawString(block.description, font, blackBrush, nameSpot);
+                    }
+                    else // triangle if no description
+                    {
+                        Single square = 0.9f; // get minimum of both side
+                        PointF[] points = {
+                    new PointF((int)(startX + (day.day * spaceBetweenColumns) + (spaceBetweenColumns*square)),(int)stopHeight)
+                    ,new PointF((int)(startX + (day.day * spaceBetweenColumns) + spaceBetweenColumns),(int)stopHeight)
+                    ,new PointF((int)(startX + (day.day * spaceBetweenColumns) + spaceBetweenColumns),(int)(stopHeight-(spaceBetweenColumns*(1-square))))
                     };
-                g.FillPolygon(triangleBrush, points);
-                //g.DrawLine(penBlack, points[0].X,points[0].Y,points[2].X,points[2].Y);
-            }
+                        g.FillPolygon(triangleBrush, points);
+                        //g.DrawLine(penBlack, points[0].X,points[0].Y,points[2].X,points[2].Y);
+                    }
+                    SizeF weekTitleSize = g.MeasureString(week.name, font);
+                    int weekTitleLeft =0;
+                    int weekTitleTop = 0;
+                    Rectangle weekTitleSpot = Rectangle.FromLTRB(weekTitleLeft, weekTitleTop, 0, weekTitleTop);
+                    g.DrawString(week.name, font, blackBrush, weekTitleSpot);
+                }
+            }  
         }
     }
 }

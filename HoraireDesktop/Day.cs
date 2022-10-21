@@ -12,8 +12,9 @@ namespace HoraireDesktop
         public int day;
         public Block[] blocks;
 
-        public Day(Block[] blocks)
+        public Day(Days dayOfWeek,Block[] blocks)
         {
+            this.day = (int)dayOfWeek;
             this.blocks = blocks;
         }
 

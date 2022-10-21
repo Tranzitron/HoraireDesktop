@@ -30,17 +30,21 @@ namespace HoraireDesktop
         static Block blockA = new Block(0,"blockA","Description", new BlockTime(10,0),new BlockTime(12,0));
         static Block blockB = new Block(1,"blockB","Description", new BlockTime(14,0),new BlockTime(16,0));
         static Block blockC = new Block(2,"Bus","Description", new BlockTime(6,45),new BlockTime(7,30));
-        static Block blockD = new Block(3,"A block","Description", new BlockTime(6,45),new BlockTime(7,30));
-        static Block[] blocks = { blockA, blockB, blockC, blockD };
+        static Block blockD = new Block(3,"Cours de philo", "Marc-Antoine<3", new BlockTime(10,10),new BlockTime(12,0));
+        static Block[] blocks1 = { blockA, blockB };
+        static Block[] blocks2 = { blockC, blockD };
 
 
-        Day day = new Day(blocks);
+        static Day day1 = new Day(Day.Days.DIMANCHE ,blocks1);
+        static Day day2 = new Day(Day.Days.MARDI ,blocks2);
+        static Day[] dayList = new Day[] { day1, day2 };
+        Week week = new Week("Week One", dayList);
         // User defined (not yet)
         int columnAmount = 5;
         int spaceBetweenColumns = 100;
         int columnsHeight = (int)(form1Size.Height * 0.8);
         int startX = 100;
-        int startY = 30;
+        int startY = 50;
 
         Font font = new Font("Arial", 12);
         Single blockTitleHeight = 0.0f;
@@ -70,10 +74,7 @@ namespace HoraireDesktop
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             form1Size = Form1.ActiveForm.Size;
             t.createCustomTable(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY);
-            foreach (Block block in blocks)
-            {
-                t.createCustomBlock(g, block, (int)(form1Size.Height * 0.8), gridStart, gridStop, spaceBetweenColumns, startX, startY, font, blockTitleHeight, blockDescHeight);
-            }
+            t.createCustomBlock(g, week, (int)(form1Size.Height * 0.8), gridStart, gridStop, spaceBetweenColumns, startX, startY, font, blockTitleHeight, blockDescHeight);
             t.createCustomText(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY, gridStart, gridStop, font);
         }
 
