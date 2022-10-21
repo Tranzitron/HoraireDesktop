@@ -47,7 +47,6 @@ namespace HoraireDesktop
             }
         }
 
-        // Add text in blocks
         public void createCustomBlock(Graphics g, Block block, int columnsHeight, int gridStart, int gridStop, int spaceBetweenColumns, int startX, int startY, Font font, Single blockTitleHeight, Single blockDescHeight)
         {
 
@@ -90,7 +89,7 @@ namespace HoraireDesktop
             } 
             else // triangle if no description
             {
-                Single square = 0.5f; // get minimum of both side
+                Single square = 0.9f; // get minimum of both side
                 PointF[] points = {
                     new PointF((int)(startX + (block.id * spaceBetweenColumns) + (spaceBetweenColumns*square)),(int)stopHeight)
                     ,new PointF((int)(startX + (block.id * spaceBetweenColumns) + spaceBetweenColumns),(int)stopHeight)

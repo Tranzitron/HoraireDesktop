@@ -20,6 +20,12 @@ namespace HoraireDesktop
 
         static Size form1Size;
         Table t = new Table();
+        PlanForm plan;
+        OptionsForm options;
+        Size planSize;
+        Size optionsSize;
+
+        Graphics g;
 
         static Block blockA = new Block(0,"blockA","Description", new BlockTime(10,0),new BlockTime(12,0));
         static Block blockB = new Block(1,"blockB","Description", new BlockTime(14,0),new BlockTime(16,0));
@@ -45,15 +51,15 @@ namespace HoraireDesktop
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            Graphics g;
+            //Graphics g;
             g = this.CreateGraphics();
             draw(g);
-            GC.Collect();
+            if(GCScheduler.Enabled == false) { GCScheduler.Start(); }
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g;
+            //Graphics g;
             g = this.CreateGraphics();
             draw(g);
         }
@@ -66,15 +72,27 @@ namespace HoraireDesktop
             t.createCustomTable(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY);
             foreach (Block block in blocks)
             {
-                t.createCustomBlock(g, block, (int)(form1Size.Height * 0.8), gridStart, gridStop, spaceBetweenColumns,startX,startY, font, blockTitleHeight, blockDescHeight);
+                t.createCustomBlock(g, block, (int)(form1Size.Height * 0.8), gridStart, gridStop, spaceBetweenColumns, startX, startY, font, blockTitleHeight, blockDescHeight);
             }
             t.createCustomText(g, columnAmount, spaceBetweenColumns, (int)(form1Size.Height * 0.8), startX, startY, gridStart, gridStop, font);
         }
 
         private void planificationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PlanForm planForm = new PlanForm();
-            planForm.ShowDialog();
+            plan = new PlanForm();
+            plan.ShowDialog();
+        }
+
+        private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            options=new OptionsForm();
+            options.ShowDialog();
+        }
+
+        private void GCScheduler_Tick(object sender, EventArgs e)
+        {
+            GC.Collect();
+            GCScheduler.Stop();
         }
     }
 }
